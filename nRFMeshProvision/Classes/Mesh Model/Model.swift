@@ -153,7 +153,7 @@ public class Model: Codable {
     }
 }
 
-internal extension UInt16 {
+public extension UInt16 {
     
     static let configurationServerModelId: UInt16 = 0x0000
     static let configurationClientModelId: UInt16 = 0x0001
@@ -162,7 +162,7 @@ internal extension UInt16 {
     
 }
 
-internal extension Model {
+public extension Model {
     
     var isConfigurationServer: Bool { return modelId == UInt32(UInt16.configurationServerModelId) }
     var isConfigurationClient: Bool { return modelId == UInt32(UInt16.configurationClientModelId) }

@@ -171,21 +171,6 @@ internal class NetworkLayer {
         } else {
             try transmitter.send(networkPdu.pdu, ofType: type)
         }
-        
-        // Unless a GATT Bearer is used, the Network PDUs should be sent multiple times
-        // if Network Transmit has been set for the local Provisioner's Node.
-        if case .networkPdu = type, !(transmitter is GattBearer),
-            let networkTransmit = meshNetwork.localProvisioner?.node?.networkTransmit,
-            networkTransmit.count > 1 {
-            var count = networkTransmit.count
-            BackgroundTimer.scheduledTimer(withTimeInterval: networkTransmit.timeInterval, repeats: true) { timer in
-                try? self.networkManager.transmitter?.send(networkPdu.pdu, ofType: type)
-                count -= 1
-                if count == 0 {
-                    timer.invalidate()
-                }
-            }
-        }
     }
     
     /// This method tries to send the Proxy Configuration Message.
