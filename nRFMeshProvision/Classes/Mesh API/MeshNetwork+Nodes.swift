@@ -100,6 +100,18 @@ public extension MeshNetwork {
     /// - returns: `True` if the given parameters match any node of this
     ///            mesh network.
     func matches(hash: Data, random: Data) -> Bool {
+        let nodeAddress = addressForIdentityBeacon(hash: hash, random: random)
+        return nodeAddress != nil
+    }
+    
+    /// Returns whether any of the Nodes in the mesh network matches
+    /// given Hash and Random. This is used to match the Node Identity beacon.
+    ///
+    /// - parameter hash:   The Hash value.
+    /// - parameter random: The Random value.
+    /// - returns: `True` if the given parameters match any node of this
+    ///            mesh network.
+    func addressForIdentityBeacon(hash: Data, random: Data) -> Address? {
         let helper = OpenSSLHelper()
         
         for node in nodes {
@@ -109,19 +121,19 @@ public extension MeshNetwork {
             for networkKey in node.networkKeys {
                 let encryptedData = helper.calculateEvalue(with: data, andKey: networkKey.keys.identityKey)!
                 if encryptedData.dropFirst(8) == hash {
-                    return true
+                    return node.unicastAddress
                 }
                 // If the Key refresh procedure is in place, the identity might have been
                 // generated with the old key.
                 if let oldIdentityKey = networkKey.oldKeys?.identityKey {
                     let encryptedData = helper.calculateEvalue(with: data, andKey: oldIdentityKey)!
                     if encryptedData.dropFirst(8) == hash {
-                        return true
+                        return node.unicastAddress
                     }
                 }
             }
         }
-        return false
+        return nil
     }
     
     /// Adds the Node to the mesh network. If a node with the same UUID
