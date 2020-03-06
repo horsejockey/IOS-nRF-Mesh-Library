@@ -298,7 +298,7 @@ extension ProvisioningManager: BearerDelegate, BearerDataDelegate {
         let pdu = request.pdu
         // The first byte is the type. We only accumulate payload.
         data.accumulate(pdu: pdu.dropFirst())
-        try bearer.send(pdu, ofType: .provisioningPdu)
+        try bearer.send(pdu, ofType: .provisioningPdu, destinationAddress: nil)
     }
     
     public func bearerDidOpen(_ bearer: Bearer) {

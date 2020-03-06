@@ -116,7 +116,7 @@ open class BaseGattProxyBearer<Service: MeshService>: NSObject, Bearer, CBCentra
         isOpened = false
     }
     
-    open func send(_ data: Data, ofType type: PduType) throws {
+    open func send(_ data: Data, ofType type: PduType, destinationAddress: Address?) throws {
         guard supports(type) else {
             throw BearerError.pduTypeNotSupported
         }

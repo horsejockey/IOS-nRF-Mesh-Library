@@ -167,9 +167,9 @@ internal class NetworkLayer {
                 return
             }
             // If the message was sent locally, don't report Bearer closer error.
-            try? transmitter.send(networkPdu.pdu, ofType: type)
+            try? transmitter.send(networkPdu.pdu, ofType: type, destinationAddress: pdu.destination)
         } else {
-            try transmitter.send(networkPdu.pdu, ofType: type)
+            try transmitter.send(networkPdu.pdu, ofType: type, destinationAddress: pdu.destination)
         }
     }
     

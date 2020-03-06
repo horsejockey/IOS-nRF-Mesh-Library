@@ -84,7 +84,7 @@ public protocol Transmitter: class {
     /// - throws: This method throws an error if the PDU type
     ///           is not supported, or data could not be sent for
     ///           some other reason.
-    func send(_ data: Data, ofType type: PduType) throws
+    func send(_ data: Data, ofType type: PduType, destinationAddress: Address?) throws
     
 }
 
@@ -140,7 +140,7 @@ extension ProvisioningBearer {
     ///           is not supported, or data could not be sent for
     ///           some other reason.
     func send(_ request: ProvisioningRequest) throws {
-        try send(request.pdu, ofType: .provisioningPdu)
+        try send(request.pdu, ofType: .provisioningPdu, destinationAddress: nil)
     }
     
 }
