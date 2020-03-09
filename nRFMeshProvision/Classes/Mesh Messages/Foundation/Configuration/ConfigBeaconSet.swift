@@ -60,3 +60,39 @@ public struct ConfigBeaconSet: AcknowledgedConfigMessage {
     }
     
 }
+
+public struct ConfigIdentityBeaconSet: AcknowledgedConfigMessage, ConfigNetKeyMessage {
+    public var networkKeyIndex: KeyIndex
+    
+    public static let opCode: UInt32 = 0x8047
+    public static let responseType: StaticMeshMessage.Type = ConfigBeaconStatus.self
+    
+    public var parameters: Data? {
+        let nodeIdentity: UInt8 = state ? 0x01 : 0x00
+        return Data([0x00, 0x00, nodeIdentity])
+    }
+    
+    /// New Secure Network Beacon state.
+    public let state: Bool
+    
+    /// Configures the Secure Network Beacon behavior on the Node.
+    ///
+    /// - parameter enable: `True` to enable Secure Network Beacon feature,
+    ///                     `false` to disable.
+    public init(networkKey: NetworkKey, enable: Bool) {
+        self.networkKeyIndex = networkKey.index
+        self.state = enable
+    }
+    
+    public init?(parameters: Data) {
+        guard parameters.count == 3 else {
+            return nil
+        }
+        guard parameters[2] <= 1 else {
+            return nil
+        }
+        networkKeyIndex = ConfigNetKeyAdd.decodeNetKeyIndex(from: parameters, at: 0)
+        self.state = parameters[2] == 0x01
+    }
+    
+}
