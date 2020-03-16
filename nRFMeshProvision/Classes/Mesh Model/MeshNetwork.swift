@@ -108,7 +108,7 @@ public class MeshNetwork: Codable {
         }
     }
     
-    internal init(name: String, uuid: UUID = UUID()) {
+    internal init(name: String, uuid: UUID = UUID(), networkKey: NetworkKey = NetworkKey()) {
         schema          = "http://json-schema.org/draft-04/schema#"
         id              = "http://www.bluetooth.com/specifications/assigned-numbers/mesh-profile/cdb-schema.json#"
         version         = "1.0.0"
@@ -116,7 +116,7 @@ public class MeshNetwork: Codable {
         meshName        = name
         timestamp       = Date()
         provisioners    = []
-        networkKeys     = [NetworkKey()]
+        networkKeys     = [networkKey]
         applicationKeys = []
         nodes           = []
         groups          = []
