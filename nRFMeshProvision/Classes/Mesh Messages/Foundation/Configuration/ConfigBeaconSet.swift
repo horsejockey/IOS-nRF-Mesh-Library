@@ -69,7 +69,7 @@ public struct ConfigIdentityBeaconSet: AcknowledgedConfigMessage, ConfigNetKeyMe
     
     public var parameters: Data? {
         let nodeIdentity: UInt8 = state ? 0x01 : 0x00
-        return Data([0x00, 0x00, nodeIdentity])
+        return networkKeyIndex.data + Data([nodeIdentity])
     }
     
     /// New Secure Network Beacon state.
