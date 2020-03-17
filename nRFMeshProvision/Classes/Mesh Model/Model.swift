@@ -274,7 +274,11 @@ internal extension Model {
     
 }
 
-extension Model: Equatable {
+extension Model: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.modelId)
+    }
     
     public static func == (lhs: Model, rhs: Model) -> Bool {
         return lhs.modelId == rhs.modelId
