@@ -71,6 +71,8 @@ open class LocalStorage: Storage {
     }
     
     public func save(_ data: Data) -> Bool {
+        print("Save Mesh JSON")
+        print(String(data: data, encoding: .utf8) ?? "Unable to decode")
         if let fileURL = getStorageFile() {
             do {
                 try data.write(to: fileURL)
